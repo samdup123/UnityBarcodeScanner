@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Ganbaranai Corp
-  productName: Barcode Scanner
+  companyName: A
+  productName: A
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -57,7 +57,7 @@ PlayerSettings:
   iosAllowHTTPDownload: 1
   allowedAutorotateToPortrait: 1
   allowedAutorotateToPortraitUpsideDown: 0
-  allowedAutorotateToLandscapeRight: 1
+  allowedAutorotateToLandscapeRight: 0
   allowedAutorotateToLandscapeLeft: 0
   useOSAutorotation: 1
   use32BitDisplayBuffer: 1
@@ -148,10 +148,10 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.ganbaranai.BarcodeScanner
+    Android: com.A.A
     Standalone: unity.Ganbaranai Corp.Barcode Scanner
     Tizen: com.ganbaranai.BarcodeScanner
-    iOS: com.ganbaranai.BarcodeScanner
+    iOS: com.A.A
     tvOS: com.ganbaranai.BarcodeScanner
   buildNumber:
     iOS: 0
