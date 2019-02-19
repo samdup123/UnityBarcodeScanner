@@ -28,7 +28,7 @@ public class ContinuousDemo : MonoBehaviour {
 	}
 
 	void Start () {
-		//QualitySettings.SetQualityLevel(1, false);
+		Debug.Log("" + resWidth + " " + resHeight + " " + Screen.width + " " + Screen.height);
 		
 		// Create a basic scanner
 		BarcodeScanner = new Scanner();
@@ -95,7 +95,7 @@ public class ContinuousDemo : MonoBehaviour {
 
 		 	System.IO.File.WriteAllBytes(screenshotFileName, BarcodeScanner.TakeScreenshot().EncodeToPNG());
 			System.IO.File.WriteAllBytes(dataFileName, Encoding.ASCII.GetBytes("Found: " + barCodeType + " / " + barCodeValue + "\n"));
-
+			
 			if (TextHeader.text.Length > 250)
 			{
 				TextHeader.text = "";
