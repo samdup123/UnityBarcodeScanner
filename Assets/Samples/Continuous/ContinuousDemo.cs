@@ -18,7 +18,7 @@ public class ContinuousDemo : MonoBehaviour {
 	private float RestartTime;
 
 	public int resWidth = Screen.width;
-        public int resHeight = Screen.height;
+	public int resHeight = Screen.height;
 
 	// Disable Screen Rotation on that screen
 	void Awake()
@@ -28,7 +28,6 @@ public class ContinuousDemo : MonoBehaviour {
 	}
 
 	void Start () {
-		//QualitySettings.SetQualityLevel(1, false);
 		
 		// Create a basic scanner
 		BarcodeScanner = new Scanner();
@@ -70,16 +69,16 @@ public class ContinuousDemo : MonoBehaviour {
 
 			RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
 			Camera camera = this.GetComponent<Camera>();
-                        camera.targetTexture = rt;
-                        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
-                        camera.Render();
-                        RenderTexture.active = rt;
-                        screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
-                        camera.targetTexture = null;
-                        RenderTexture.active = null; // JC: added to avoid errors
-                        Destroy(rt);
+			camera.targetTexture = rt;
+			Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+			camera.Render();
+			RenderTexture.active = rt;
+			screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+			camera.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+        	Destroy(rt);
             
-                        string time = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            string time = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 			string folderName = string.Format("{0}/captures", 
                             				Application.persistentDataPath);
 			string screenshotFileName = string.Format("{0}/screen_{1}x{2}_{3}.png", 
@@ -95,7 +94,7 @@ public class ContinuousDemo : MonoBehaviour {
 
 		 	System.IO.File.WriteAllBytes(screenshotFileName, BarcodeScanner.TakeScreenshot().EncodeToPNG());
 			System.IO.File.WriteAllBytes(dataFileName, Encoding.ASCII.GetBytes("Found: " + barCodeType + " / " + barCodeValue + "\n"));
-
+			
 			if (TextHeader.text.Length > 250)
 			{
 				TextHeader.text = "";
