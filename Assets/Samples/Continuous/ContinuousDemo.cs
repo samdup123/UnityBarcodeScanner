@@ -28,7 +28,6 @@ public class ContinuousDemo : MonoBehaviour {
 	}
 
 	void Start () {
-		Debug.Log("" + resWidth + " " + resHeight + " " + Screen.width + " " + Screen.height);
 		
 		// Create a basic scanner
 		BarcodeScanner = new Scanner();
