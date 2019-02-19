@@ -28,13 +28,13 @@ namespace BarcodeScanner
 			ScannerDelayFrameMin = 3;
 			ScannerDecodeInterval = 0.1f;
 
-			ParserAutoRotate = true;
+			ParserAutoRotate = false;
 			ParserTryInverted = true;
 			ParserTryHarder = false;
 			
 			WebcamDefaultDeviceName = (WebCamTexture.devices.Length > 0) ? WebCamTexture.devices.First().name : "";
-			WebcamRequestedWidth = 512;
-			WebcamRequestedHeight = 512;
+			WebcamRequestedWidth = Screen.width;
+			WebcamRequestedHeight = Screen.height;
 			WebcamFilterMode = FilterMode.Trilinear;
 
 			// Device dependent settings
