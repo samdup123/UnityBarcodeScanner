@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Emit;
 using UnityEngine;
 using Wizcorp.Utils.Logger;
 using ZXing;
@@ -39,6 +40,8 @@ namespace BarcodeScanner.Parser
 			try
 			{
 				var result = Scanner.Decode(colors, width, height);
+				Log.Debug(sUtils.SizeOf(result));
+				Log.Debug("blaaah");
 				if (result != null)
 				{
 					value = new ParserResult(result.BarcodeFormat.ToString(), result.Text);
@@ -50,6 +53,35 @@ namespace BarcodeScanner.Parser
 			}
 			
 			return value;
+		}
+
+
+// ...
+
+		public static class sUtils
+		{
+			public static int SizeOf<T>(T obj)
+			{
+				return SizeOfCache<T>.SizeOf;
+			}
+
+			private static class SizeOfCache<T>
+			{
+				public static readonly int SizeOf;
+
+				static SizeOfCache()
+				{
+					var dm = new DynamicMethod("func", typeof(int),
+										Type.EmptyTypes, typeof(sUtils));
+
+					ILGenerator il = dm.GetILGenerator();
+					il.Emit(OpCodes.Sizeof, typeof(T));
+					il.Emit(OpCodes.Ret);
+
+					var func = (Func<int>)dm.CreateDelegate(typeof(Func<int>));
+					SizeOf = func();
+				}
+			}
 		}
 	}
 }
