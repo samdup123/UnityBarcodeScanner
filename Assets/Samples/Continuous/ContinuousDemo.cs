@@ -22,6 +22,7 @@ public class ContinuousDemo : MonoBehaviour {
 	public int resHeight = Screen.height;
 
 	private IEnumerator coroutine;
+	private bool coroutineRunning = false;
 
 	// Disable Screen Rotation on that screen
 	void Awake()
@@ -96,7 +97,7 @@ public class ContinuousDemo : MonoBehaviour {
 			{
 				TextHeader.text = "";
 			}
-			TextHeader.text += "Filename " + screenshotFileName + "\n";
+			TextHeader.text = "Filename " + screenshotFileName + "\n";
 
 			if(!Directory.Exists(folderName)){
 				Directory.CreateDirectory(folderName);
@@ -110,14 +111,19 @@ public class ContinuousDemo : MonoBehaviour {
 
 	private IEnumerator StoreInformation(byte[] imageBytes, string barCodeType, string barCodeValue, string screenshotFileName, string dataFileName)
     {
+			coroutineRunning = true;
 			yield return new WaitForSeconds(2);
 			System.IO.File.WriteAllBytes(screenshotFileName, imageBytes);
 			System.IO.File.WriteAllBytes(dataFileName, Encoding.ASCII.GetBytes("Found: " + barCodeType + " / " + barCodeValue + "\n"));
-    }
+			coroutineRunning = false;
+		}
 
 	public void DoNotSaveData()
 	{
-		StopCoroutine(coroutine);
+		if (coroutineRunning) {
+			TextHeader.text = "Barcode Info not saved";
+			StopCoroutine(coroutine);
+		}
 	}
 
 	/// <summary>
