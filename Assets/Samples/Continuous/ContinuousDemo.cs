@@ -115,10 +115,10 @@ public class ContinuousDemo : MonoBehaviour {
 			System.IO.File.WriteAllBytes(dataFileName, Encoding.ASCII.GetBytes("Found: " + barCodeType + " / " + barCodeValue + "\n"));
     }
 
-		public void DoNotSaveData()
-		{
-			StopCoroutine(coroutine);
-		}
+	public void DoNotSaveData()
+	{
+		StopCoroutine(coroutine);
+	}
 
 	/// <summary>
 	/// The Update method from unity need to be propagated
