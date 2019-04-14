@@ -1,4 +1,4 @@
-﻿using BarcodeScanner;
+using BarcodeScanner;
 using BarcodeScanner.Scanner;
 using System;
 using System.IO;
@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Text;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class ContinuousDemo : MonoBehaviour {
 
@@ -20,6 +21,8 @@ public class ContinuousDemo : MonoBehaviour {
 	public int resWidth = Screen.width;
 	public int resHeight = Screen.height;
 
+	private IEnumerator coroutine;
+
 	// Disable Screen Rotation on that screen
 	void Awake()
 	{
@@ -28,7 +31,7 @@ public class ContinuousDemo : MonoBehaviour {
 	}
 
 	void Start () {
-		
+
 		// Create a basic scanner
 		BarcodeScanner = new Scanner();
 		BarcodeScanner.Camera.Play();
@@ -77,31 +80,45 @@ public class ContinuousDemo : MonoBehaviour {
 			camera.targetTexture = null;
             RenderTexture.active = null; // JC: added to avoid errors
         	Destroy(rt);
-            
-            string time = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-			string folderName = string.Format("{0}/captures", 
-                            				Application.persistentDataPath);
-			string screenshotFileName = string.Format("{0}/screen_{1}x{2}_{3}.png", 
-                            				folderName, 
-                            				resWidth, resHeight, 
-                            				time);
-			string dataFileName = string.Format("{0}/data_{1}.txt", 
-                            		folderName, 
-                           			time);
-			if(!Directory.Exists(folderName)){
-				Directory.CreateDirectory(folderName);
-			}
 
-		 	System.IO.File.WriteAllBytes(screenshotFileName, BarcodeScanner.TakeScreenshot().EncodeToPNG());
-			System.IO.File.WriteAllBytes(dataFileName, Encoding.ASCII.GetBytes("Found: " + barCodeType + " / " + barCodeValue + "\n"));
-			
+            string time = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+			string folderName = string.Format("{0}/captures",
+                            				Application.persistentDataPath);
+			string screenshotFileName = string.Format("{0}/screen_{1}x{2}_{3}.png",
+                            				folderName,
+                            				resWidth, resHeight,
+                            				time);
+			string dataFileName = string.Format("{0}/data_{1}.txt",
+                            		folderName,
+                           			time);
+
 			if (TextHeader.text.Length > 250)
 			{
 				TextHeader.text = "";
 			}
 			TextHeader.text += "Filename " + screenshotFileName + "\n";
+
+			if(!Directory.Exists(folderName)){
+				Directory.CreateDirectory(folderName);
+			}
+			byte[] imageBytes = BarcodeScanner.TakeScreenshot().EncodeToPNG();
+
+			coroutine = StoreInformation(imageBytes, barCodeType, barCodeValue, screenshotFileName, dataFileName);
+			StartCoroutine(coroutine);
 		});
 	}
+
+	private IEnumerator StoreInformation(byte[] imageBytes, string barCodeType, string barCodeValue, string screenshotFileName, string dataFileName)
+    {
+			yield return new WaitForSeconds(2);
+			System.IO.File.WriteAllBytes(screenshotFileName, imageBytes);
+			System.IO.File.WriteAllBytes(dataFileName, Encoding.ASCII.GetBytes("Found: " + barCodeType + " / " + barCodeValue + "\n"));
+    }
+
+		public void DoNotSaveData()
+		{
+			StopCoroutine(coroutine);
+		}
 
 	/// <summary>
 	/// The Update method from unity need to be propagated
